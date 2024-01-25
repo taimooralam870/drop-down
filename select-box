@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Drop Down</title>
+</head>
+<body>
+    <section class="bg-[#B2B2B2] py-[80px] h-screen">
+        <div class="max-w-[450px] mx-auto bg-white shadow-lg rounded-lg px-4 py-8">
+            <div class="text-center text-[14px]">
+                <div class="font-[600] py-6 text-[22px] leading-[26px]">
+                    WHAT SHADE HAVE YOU USED BEFORE?
+                </div>
+                <div>
+                    Select a foundation shade that worked with your skin to find
+                </div>
+                <div>your best match in Makeup by Mario SurrealSkin™ Foundation:</div>
+                <div class="flex flex-col gap-[20px]">
+                    <div>
+                        <label class="hidden" for="firstList">Brand</label>
+                        <div class="text-start">Brand</div>
+                        <select class="border w-full px-2 bg-[#F2F2F2] py-2 text-[#757575]" id="firstList">
+                            <option value="" disabled selected>Select Brand</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="hidden" for="secondList hidden">Product</label>
+                        <div class="text-start">Product</div>
+                        <select class="border w-full px-2 bg-[#F2F2F2] py-2 text-[#757575]" placeholder="hello"
+                            id="secondList" disabled>
+                            <option value="" disabled selected>Select Product</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="hidden" for="thirdList hidden">Shade</label>
+                        <div class="text-start">Shade</div>
+                        <select class="border w-full px-2 bg-[#F2F2F2] py-2 text-[#757575]" id="thirdList" disabled>
+                            <option value="" disabled selected>Select Shade</option>
+                        </select>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+        </div>
+    </section>
+    <script>
+        $(document).ready(function () {
+            var brands = [
+                { id: 1, name: 'Brand 1' },
+                { id: 2, name: 'Brand 2' },
+                { id: 3, name: 'Brand 3' }
+            ];
+    
+            var products = [
+                { id: 1, name: 'Product 1', brandId: 1 },
+                { id: 2, name: 'Product 2', brandId: 1 },
+                { id: 3, name: 'Product 3', brandId: 2 },
+                { id: 4, name: 'Product 4', brandId: 3 }
+            ];
+    
+            var shades = [
+                { id: 1, name: 'Shade 1', productId: 1 },
+                { id: 2, name: 'Shade 2', productId: 2 },
+                { id: 3, name: 'Shade 3', productId: 2 },
+                { id: 4, name: 'Shade 4', productId: 4 },
+                { id: 5, name: 'Shade 5', productId: 4 }
+            ];
+    
+            function populateDropdown(options, dropdown, defaultText) {
+                dropdown.html('<option value="" disabled selected>' + defaultText + '</option>');
+                $.each(options, function (index, option) {
+                    dropdown.append('<option value="' + option.id + '">' + option.name + '</option>');
+                });
+                dropdown.prop("disabled", false);
+            }
+    
+            populateDropdown(brands, $("#firstList"), "Select Brand");
+    
+            $("#firstList").on("change", function () {
+                var selectedBrand = $(this).val();
+                $("#secondList, #thirdList").prop("disabled", true);
+    
+                var filteredProducts = $.grep(products, function (product) {
+                    return product.brandId == selectedBrand;
+                });
+    
+                populateDropdown(filteredProducts, $("#secondList"), "Select Product");
+            });
+    
+            $("#secondList").on("change", function () {
+                var selectedProduct = $(this).val();
+                $("#thirdList").prop("disabled", true);
+    
+                var filteredShades = $.grep(shades, function (shade) {
+                    return shade.productId == selectedProduct;
+                });
+    
+                populateDropdown(filteredShades, $("#thirdList"), "Select Shade");
+            });
+        });
+    </script>
+    
+    
+</body>
+
+</html>
